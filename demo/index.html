@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="../dist/tabs-menu.css">
+
+</head>
+
+<body>
+
+  <div id="app"></div>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+  <script src="https://unpkg.com/vue-router@3/dist/vue-router.js"></script>
+
+  <script src="../dist/tabs-menu.umd.js"></script>
+
+
+
+  <script>
+
+    Vue.use(VueRouter)
+
+    const Foo = { template: '<div>foo</div>' }
+    const Bar = { template: '<div>bar</div>' }
+
+
+    const routes = Array.from({ length: 20 }).map((item, index) => {
+      const name = `模拟菜单${index}`
+      return { path: `/foo/${index}`, component: { template: `<div>${name}${index}</div>` }, name: `/foo/${index}`, meta: { title: name } }
+
+    })
+
+    const router = new VueRouter({
+      routes // (缩写) 相当于 routes: routes
+    })
+    var data = {
+      title: "tabs-menu",
+      routes
+    }
+
+    var vm = new Vue({
+      data: data,
+      template: `<div><h3>{{title}}<tabs-menu ref="tabRef" /></h3>
+        <router-link :to="item.path" v-for="item in routes" :key="item.path" style="margin-right: 10px">Go to {{item.path}}</router-link>
+    <router-link to="/bar">Go to Bar</router-link>
+        <router-view></router-view>
+
+        </div>`,
+      router
+    })
+
+    vm.$mount('#app')
+
+    function createRoute() {
+      return {
+        fullPath: `/${Math.random() * 1000}`,
+        name: `name${Math.random() * 1000}`,
+        meta: {
+          title: `title${Math.random() * 1000}`
+        },
+        params: {},
+        path: {},
+        query: {},
+        hash: {}
+      }
+    }
+
+
+
+    console.log(vm)
+
+  </script>
+
+</body>
+
+</html>
